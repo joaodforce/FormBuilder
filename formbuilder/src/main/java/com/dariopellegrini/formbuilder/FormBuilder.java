@@ -211,6 +211,26 @@ public class FormBuilder {
                 viewMap.put(formElement.getTagOrToString(), editText);
                 addViewToView(textInputLayout, timeEditText);
                 return textInputLayout;
+            case DATETIME:
+                textInputLayout = new TextInputLayout(context);
+                final EditText dateTimeEditText = new EditText(context);
+                dateTimeEditText.setFocusable(false);
+                dateTimeEditText.setClickable(true);
+                dateTimeEditText.setEnabled(formElement.getEnabled());
+                dateTimeEditText.setHint(formElement.getHint());
+                dateTimeEditText.setText(formElement.getValue());
+                dateTimeEditText.setInputType(InputType.TYPE_CLASS_TEXT);
+                dateTimeEditText.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        selectedFormElement = formElement;
+                        pickTime(dateTimeEditText);
+                    }
+                });
+                dateTimeEditText.setText(formElement.getValue());
+                viewMap.put(formElement.getTagOrToString(), editText);
+                addViewToView(textInputLayout, dateTimeEditText);
+                return textInputLayout;
             case MULTIPLE_SELECTION:
                 textInputLayout = new TextInputLayout(context);
                 final EditText multipleSelectionEditText = new EditText(context);
@@ -324,6 +344,35 @@ public class FormBuilder {
 
     };
 
+    // Date picker
+    public void pickDateAndTime(EditText et) {
+        if (et != null) {
+            selectedEditText = et;
+            new DatePickerDialog(context, dateThenTimePickerListener, calendar
+                    .get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+                    calendar.get(Calendar.DAY_OF_MONTH)).show();
+        }
+    }
+
+    private DatePickerDialog.OnDateSetListener dateThenTimePickerListener = new DatePickerDialog.OnDateSetListener() {
+
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH, monthOfYear);
+            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+            SimpleDateFormat sdf = new SimpleDateFormat(selectedFormElement.getDateFormat());
+
+            if (selectedEditText != null) {
+                selectedEditText.setText(sdf.format(calendar.getTime()));
+                selectedFormElement.setValue(sdf.format(calendar.getTime()));
+                pickTime(selectedEditText);
+            }
+        }
+
+    };
+
     // Time picker
     public void pickTime(EditText et) {
         if (et != null) {
@@ -346,8 +395,20 @@ public class FormBuilder {
             SimpleDateFormat sdf = new SimpleDateFormat(selectedFormElement.getTimeFormat());
 
             if (selectedEditText != null) {
-                selectedEditText.setText(sdf.format(calendar.getTime()));
-                selectedFormElement.setValue(sdf.format(calendar.getTime()));
+                if (selectedFormElement.getType() == FormElement.Type.DATETIME) {
+
+                    String timeVal = sdf.format(calendar.getTime());
+                    String dateVal = selectedFormElement.getValue();
+
+                    String newVal = dateVal + " " + timeVal;
+
+                    selectedEditText.setText(newVal);
+                    selectedFormElement.setValue(newVal);
+
+                } else {
+                    selectedEditText.setText(sdf.format(calendar.getTime()));
+                    selectedFormElement.setValue(sdf.format(calendar.getTime()));
+                }
             }
         }
     };

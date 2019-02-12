@@ -14,7 +14,7 @@ public class FormElement extends FormObject {
 
     public enum Type {
         TEXT, TEXTVIEW, EMAIL, PASSWORD, PHONE, NUMBER, URL, SPINNER, ZIP,
-        SELECTION, MULTIPLE_SELECTION, DATE, TIME
+        SELECTION, MULTIPLE_SELECTION, DATE, TIME, DATETIME
     }
 
     private String tag;
