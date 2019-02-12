@@ -224,7 +224,7 @@ public class FormBuilder {
                     @Override
                     public void onClick(View view) {
                         selectedFormElement = formElement;
-                        pickTime(dateTimeEditText);
+                        pickDateAndTime(dateTimeEditText);
                     }
                 });
                 dateTimeEditText.setText(formElement.getValue());
