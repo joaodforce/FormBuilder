@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -362,11 +363,7 @@ public class FormBuilder {
             calendar.set(Calendar.MONTH, monthOfYear);
             calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-            SimpleDateFormat sdf = new SimpleDateFormat(selectedFormElement.getDateFormat());
-
             if (selectedEditText != null) {
-                selectedEditText.setText(sdf.format(calendar.getTime()));
-                selectedFormElement.setValue(sdf.format(calendar.getTime()));
                 pickTime(selectedEditText);
             }
         }
@@ -392,20 +389,18 @@ public class FormBuilder {
             calendar.set(Calendar.HOUR, selectedHour);
             calendar.set(Calendar.MINUTE, selectedMinute);
 
-            SimpleDateFormat sdf = new SimpleDateFormat(selectedFormElement.getTimeFormat());
 
             if (selectedEditText != null) {
                 if (selectedFormElement.getType() == FormElement.Type.DATETIME) {
 
-                    String timeVal = sdf.format(calendar.getTime());
-                    String dateVal = selectedFormElement.getValue();
+                    SimpleDateFormat sdf = new SimpleDateFormat(selectedFormElement.getDateTimeFormat());
 
-                    String newVal = dateVal + " " + timeVal;
-
-                    selectedEditText.setText(newVal);
-                    selectedFormElement.setValue(newVal);
+                    selectedEditText.setText(DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM).format(calendar));
+                    selectedFormElement.setValue(sdf.format(calendar));
 
                 } else {
+                    SimpleDateFormat sdf = new SimpleDateFormat(selectedFormElement.getTimeFormat());
+
                     selectedEditText.setText(sdf.format(calendar.getTime()));
                     selectedFormElement.setValue(sdf.format(calendar.getTime()));
                 }
