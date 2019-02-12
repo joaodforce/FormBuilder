@@ -106,7 +106,7 @@ public class FormBuilder {
                 editText.setHint(formElement.getHint());
                 editText.setText(formElement.getValue());
                 editText.setGravity(Gravity.LEFT | Gravity.TOP);
-                editText.setInputType(InputType.TYPE_CLASS_TEXT);
+                editText.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
                 editText.setText(formElement.getValue());
                 viewMap.put(formElement.getTagOrToString(), editText);
                 return editText;
@@ -450,7 +450,7 @@ public class FormBuilder {
     }
 
     private void pickDialog(final EditText selectedEditText, final FormElement selectedFormElement) {
-        final List<String> selectedElements = new ArrayList<String>(selectedFormElement.getOptionsSelected());
+        final List<String> selectedElements = new ArrayList<String>();
         this.selectedEditText = selectedEditText;
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("");
