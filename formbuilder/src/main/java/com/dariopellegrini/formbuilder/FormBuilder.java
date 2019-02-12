@@ -395,8 +395,8 @@ public class FormBuilder {
 
                     SimpleDateFormat sdf = new SimpleDateFormat(selectedFormElement.getDateTimeFormat());
 
-                    selectedEditText.setText(DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM).format(calendar));
-                    selectedFormElement.setValue(sdf.format(calendar));
+                    selectedEditText.setText(DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM).format(calendar.getTime()));
+                    selectedFormElement.setValue(sdf.format(calendar.getTime()));
 
                 } else {
                     SimpleDateFormat sdf = new SimpleDateFormat(selectedFormElement.getTimeFormat());
